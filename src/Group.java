@@ -48,22 +48,23 @@ public class Group implements MilitaryСommissar {
         }
     }
 
-    public void searchStudent(String surname) {
-        List<Student> foundStudent = new ArrayList<>();
+    public Student []searchStudent (String surname) {
+        Student []foundStudent =new Student[1];
         for (int i = 0; i < this.group.length; i++) {
             if (this.group[i] != null) {
                 if (this.group[i].getSurname().equalsIgnoreCase(surname)) {
-                    foundStudent.add(this.group[i]);
+                    if(foundStudent.length==1 && foundStudent[0]==null) {
+                        foundStudent[0]=this.group[i];
+                    }else {
+                        Student[] foundStudentTemp = Arrays.copyOf(foundStudent, foundStudent.length + 1);
+                        foundStudentTemp[foundStudentTemp.length - 1] = this.group[i];
+                        foundStudent = Arrays.copyOf(foundStudentTemp, foundStudentTemp.length);
+                    }
+
                 }
             }
         }
-        if (foundStudent.isEmpty()) {
-            System.out.println("There is no student with the specified surname in the grouper");
-            return;
-        }
-        for (Student student : foundStudent) {
-            System.out.println(student.toString());
-        }
+        return foundStudent;
     }
 
     @Override
